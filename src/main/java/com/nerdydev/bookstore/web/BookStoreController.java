@@ -1,42 +1,41 @@
 package com.nerdydev.bookstore.web;
 
 import com.nerdydev.bookstore.model.Book;
-import com.nerdydev.bookstore.repository.BookRepository;
+import com.nerdydev.bookstore.service.BookReportService;
+import com.nerdydev.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Files;
 import java.util.Optional;
 
 @Controller
 public class BookStoreController {
 
-    private BookRepository bookRepository;
-
+    private BookService bookService;
+    private BookReportService bookReportService;
 
     @Autowired
-    public void setBookRepository(BookRepository bookRepository1) {
-        this.bookRepository = bookRepository1;
+    public void setBookService(BookService bookService1) {
+        this.bookService = bookService1;
     }
 
+    @Autowired
+    public void setBookReportService(BookReportService bookReportService1) {
+        this.bookReportService = bookReportService1;
+    }
 
     @GetMapping(value = {"/","/list"})
     public String getBookForm(ModelMap model) {
-        model.put("listBook", bookRepository.findAll());
+        model.put("listBook", bookService.findAll());
         return "booklist";
     }
 
@@ -47,7 +46,7 @@ public class BookStoreController {
 
     @GetMapping("/edit")
     public String showEditForm(@RequestParam BigDecimal id, ModelMap modelMap) {
-        Optional<Book> bookOpt = bookRepository.findById(id);
+        Optional<Book> bookOpt = bookService.findById(id);
         Book book = null;
         if (bookOpt.isPresent()) {
             book = bookOpt.get();
@@ -67,26 +66,32 @@ public class BookStoreController {
         BigDecimal amount = BigDecimal.valueOf(price);
         amount = amount.setScale(2, RoundingMode.HALF_UP);
         newBook.setPrice(amount.doubleValue());
-        bookRepository.save(newBook);
-        model.put("listBook", bookRepository.findAll());
+        bookService.save(newBook);
+        model.put("listBook", bookService.findAll());
         return("booklist");
     }
 
 
     @PostMapping(path = "/update", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String updateBook(Book book, ModelMap model) {
-        bookRepository.save(book);
-        model.put("listBook", bookRepository.findAll());
+        bookService.save(book);
+        model.put("listBook", bookService.findAll());
         return("booklist");
     }
 
     @GetMapping("/delete")
     public String deleteBook(@RequestParam BigDecimal id, ModelMap modelMap) {
-        bookRepository.deleteById(id);
-        modelMap.put("listBook", bookRepository.findAll());
+        bookService.deleteById(id);
+        modelMap.put("listBook", bookService.findAll());
         return("booklist");
     }
 
+
+    @GetMapping("/report")
+    public String generateReport() {
+        File reportFile = bookReportService.generateReport();
+        return("booklist");
+    }
 
 
     @GetMapping("error")
