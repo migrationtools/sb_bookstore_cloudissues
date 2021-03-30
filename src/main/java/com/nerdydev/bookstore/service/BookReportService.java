@@ -13,9 +13,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
 import org.supercsv.io.*;
 import org.supercsv.prefs.CsvPreference;
-
+@Component
 public class BookReportService {
 
     private BookRepository bookRepository;
