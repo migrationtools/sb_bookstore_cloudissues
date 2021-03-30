@@ -1,0 +1,44 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style>
+		table td{
+			vertical-align:top;
+			border:solid 1px #888;
+			padding:10px;
+		}
+	</style>
+	<link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<h1>Bookstore Error Page</h1>
+<table>
+	<tr>
+		<td>Date</td>
+		<td th:text="${timestamp}"/>
+	</tr>
+	<tr>
+		<td>Error</td>
+		<td th:text="${error}"/>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td th:text="${status}"/>
+	</tr>
+	<tr>
+		<td>Message</td>
+		<td th:text="${message}"/>
+	</tr>
+	<tr>
+		<td>Exception</td>
+		<td th:text="${exception}"/>
+	</tr>
+	<tr>
+		<td>Trace</td>
+		<td>
+			<pre th:value="${trace}"/>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

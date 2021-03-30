@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>BookStore Application</title>
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+
+<body>
+<center>
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <h1>Books Management</h1>
+        <h2>
+            <a th:href="@{/new}">Add New Book</a>
+            <a th:href="@{/list}">List All Books</a>
+        </h2>
+        <div align="center">
+            <form th:if="${book != null}" action="update" method="post">
+                <table border="1" cellpadding="5">
+                    <h2>
+                        <caption th:if="${book != null}">Edit Book</caption>
+                        <caption th:unless="${book != null}">Add New Book</caption>
+                    </h2>
+                    <input th:if="${book != null}" type="hidden" name="bookId" th:value="${book.bookId}" />
+                    <tr>
+                        <th>Title</th>
+                        <td>
+                            <input type="text" name="title" size="45"
+                                   th:value="${book.title}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Author: </th>
+                        <td>
+                            <input type="text" name="author" size="45"
+                                   th:value='${book.author}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Price: </th>
+                        <td>
+                            <input type="text" name="price" size="5"
+                                   th:value='${book.price}'/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <form th:unless="${book != null}" action="insert" method="post">
+                <table border="1" cellpadding="5">
+                    <h2>
+                        <caption>Add New Book</caption>
+                    </h2>
+                    <tr>
+                        <th>Title</th>
+                        <td>
+                            <input type="text" name="title" size="45"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Author: </th>
+                        <td>
+                            <input type="text" name="author" size="45"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Price: </th>
+                        <td>
+                            <input type="text" name="price" size="5"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        </div>
+    </main>
+<!-- /.container -->
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</center>
+</body>
+</html>

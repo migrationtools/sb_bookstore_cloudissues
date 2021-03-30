@@ -34,7 +34,7 @@ public class BookStoreController {
     }
 
 
-    @GetMapping(value = {"/","/booklist","/list"})
+    @GetMapping(value = {"/","/list"})
     public String getBookForm(ModelMap model) {
         model.put("listBook", bookRepository.findAll());
         return "booklist";
